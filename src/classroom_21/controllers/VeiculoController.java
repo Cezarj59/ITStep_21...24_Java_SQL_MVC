@@ -1,16 +1,15 @@
 package classroom_21.controllers;
 
-
 import classroom_21.models.Veiculo;
 import classroom_21.services.BancoDados;
 import classroom_21.services.Receber;
-
 
 import java.sql.*;
 import java.util.ArrayList;
 
 public class VeiculoController {
-    public static void imprime(Veiculo v){
+
+    public static void imprime(Veiculo v) {
         System.out.println("ID: " + v.getId());
         System.out.println("Modelo: " + v.getModelo());
         System.out.println("Fabricante: " + v.getFabricante());
@@ -19,7 +18,7 @@ public class VeiculoController {
         System.out.println("Preço: R$ " + v.getPreco());
     }
 
-    public static Veiculo cadastra(){
+    public static Veiculo cadastra() {
         Veiculo v = new Veiculo();
 
         System.out.print("Modelo: ");
@@ -40,21 +39,21 @@ public class VeiculoController {
         return v;
     }
 
-    public static void addVeiculo(Veiculo v){
+    public static void addVeiculo(Veiculo v) {
         Connection conn = BancoDados.conecta();
-        try{
+        try {
             String sql = "INSERT INTO veiculo (modelo, fabricante, ano, cor, preco) VALUES (?,?,?,?,?)";
             PreparedStatement statement = conn.prepareStatement(sql);
 
-            statement.setString(1,v.getModelo());
-            statement.setString(2,v.getFabricante());
-            statement.setInt(3,v.getAno());
-            statement.setString(4,v.getCor());
-            statement.setDouble(5,v.getPreco());
+            statement.setString(1, v.getModelo());
+            statement.setString(2, v.getFabricante());
+            statement.setInt(3, v.getAno());
+            statement.setString(4, v.getCor());
+            statement.setDouble(5, v.getPreco());
 
             int linhas = statement.executeUpdate();
 
-            if(linhas > 0){
+            if (linhas > 0) {
                 System.out.println("\n\n===============================");
                 System.out.println("Veículo Cadastrado com Sucesso!");
                 System.out.println("===============================\n\n");
@@ -67,10 +66,10 @@ public class VeiculoController {
         BancoDados.fecha(conn);
     }
 
-    public static ArrayList<Veiculo> getAll(){
+    public static ArrayList<Veiculo> getAll() {
         Connection conn = BancoDados.conecta();
 
-        try{
+        try {
             String sql = "SELECT * FROM veiculo";
             Statement statement = conn.createStatement();
 
@@ -78,45 +77,15 @@ public class VeiculoController {
 
             ArrayList<Veiculo> veiculosList = new ArrayList<Veiculo>();
 
-            while(resultados.next()){
-               veiculosList.add(new Veiculo(
-                        resultados.getInt("id"),
-                        resultados.getString("modelo"),
-                        resultados.getString("fabricante"),
-                        resultados.getString("cor"),
-                        resultados.getInt("ano"),
-                        resultados.getDouble("preco")
-                ));
-            }
-            BancoDados.fecha(conn);
-            return veiculosList;
-        } catch (SQLException e) {
-            System.err.println(e);
-        }
-
-        BancoDados.fecha(conn);
-        return null;
-    }
-
-    public static ArrayList<Veiculo> getPorFabricante(String fabricante){
-        Connection conn = BancoDados.conecta();
-
-        try{
-            String sql = "SELECT * FROM veiculo WHERE fabricante LIKE '%" + fabricante +"%'";
-            Statement statement = conn.createStatement();
-
-            ResultSet resultados = statement.executeQuery(sql);
-
-            ArrayList<Veiculo> veiculosList = new ArrayList<Veiculo>();
-
-            while(resultados.next()){
+            while (resultados.next()) {
                 veiculosList.add(new Veiculo(
                         resultados.getInt("id"),
                         resultados.getString("modelo"),
                         resultados.getString("fabricante"),
                         resultados.getString("cor"),
                         resultados.getInt("ano"),
-                        resultados.getDouble("preco")
+                        resultados.getDouble("preco"),
+                        resultados.getBoolean("vendido")
                 ));
             }
             BancoDados.fecha(conn);
@@ -129,25 +98,26 @@ public class VeiculoController {
         return null;
     }
 
-    public static ArrayList<Veiculo> getPorPrecoMaximo(double preco){
+    public static ArrayList<Veiculo> getPorFabricante(String fabricante) {
         Connection conn = BancoDados.conecta();
 
-        try{
-            String sql = "SELECT * FROM veiculo WHERE preco <= " + preco +"";
+        try {
+            String sql = "SELECT * FROM veiculo WHERE fabricante LIKE '%" + fabricante + "%'";
             Statement statement = conn.createStatement();
 
             ResultSet resultados = statement.executeQuery(sql);
 
             ArrayList<Veiculo> veiculosList = new ArrayList<Veiculo>();
 
-            while(resultados.next()){
+            while (resultados.next()) {
                 veiculosList.add(new Veiculo(
                         resultados.getInt("id"),
                         resultados.getString("modelo"),
                         resultados.getString("fabricante"),
                         resultados.getString("cor"),
                         resultados.getInt("ano"),
-                        resultados.getDouble("preco")
+                        resultados.getDouble("preco"),
+                        resultados.getBoolean("vendido")
                 ));
             }
             BancoDados.fecha(conn);
@@ -159,26 +129,27 @@ public class VeiculoController {
         BancoDados.fecha(conn);
         return null;
     }
-    
-     public static ArrayList<Veiculo> getPorCor(String cor){
+
+    public static ArrayList<Veiculo> getPorPrecoMaximo(double preco) {
         Connection conn = BancoDados.conecta();
 
-        try{
-           String sql = "SELECT * FROM veiculo WHERE cor LIKE '%" + cor +"%'";
+        try {
+            String sql = "SELECT * FROM veiculo WHERE preco <= " + preco + "";
             Statement statement = conn.createStatement();
 
             ResultSet resultados = statement.executeQuery(sql);
 
             ArrayList<Veiculo> veiculosList = new ArrayList<Veiculo>();
 
-            while(resultados.next()){
+            while (resultados.next()) {
                 veiculosList.add(new Veiculo(
                         resultados.getInt("id"),
                         resultados.getString("modelo"),
                         resultados.getString("fabricante"),
                         resultados.getString("cor"),
                         resultados.getInt("ano"),
-                        resultados.getDouble("preco")
+                        resultados.getDouble("preco"),
+                        resultados.getBoolean("vendido")
                 ));
             }
             BancoDados.fecha(conn);
@@ -190,26 +161,27 @@ public class VeiculoController {
         BancoDados.fecha(conn);
         return null;
     }
-     
-     public static ArrayList<Veiculo> getPorFaixaDePreco(double menor,double maior){
+
+    public static ArrayList<Veiculo> getPorCor(String cor) {
         Connection conn = BancoDados.conecta();
 
-        try{
-            String sql = "SELECT * FROM veiculo WHERE preco >= " + menor +"AND preco <= " + maior;
+        try {
+            String sql = "SELECT * FROM veiculo WHERE cor LIKE '%" + cor + "%'";
             Statement statement = conn.createStatement();
 
             ResultSet resultados = statement.executeQuery(sql);
 
             ArrayList<Veiculo> veiculosList = new ArrayList<Veiculo>();
 
-            while(resultados.next()){
+            while (resultados.next()) {
                 veiculosList.add(new Veiculo(
                         resultados.getInt("id"),
                         resultados.getString("modelo"),
                         resultados.getString("fabricante"),
                         resultados.getString("cor"),
                         resultados.getInt("ano"),
-                        resultados.getDouble("preco")
+                        resultados.getDouble("preco"),
+                        resultados.getBoolean("vendido")
                 ));
             }
             BancoDados.fecha(conn);
@@ -221,26 +193,27 @@ public class VeiculoController {
         BancoDados.fecha(conn);
         return null;
     }
-     
-      public static ArrayList<Veiculo> getPorModelo(String modelo){
+
+    public static ArrayList<Veiculo> getPorFaixaDePreco(double menor, double maior) {
         Connection conn = BancoDados.conecta();
 
-        try{
-            String sql = "SELECT * FROM veiculo WHERE modelo LIKE '%" + modelo +"%'";
+        try {
+            String sql = "SELECT * FROM veiculo WHERE preco >= " + menor + "AND preco <= " + maior;
             Statement statement = conn.createStatement();
 
             ResultSet resultados = statement.executeQuery(sql);
 
             ArrayList<Veiculo> veiculosList = new ArrayList<Veiculo>();
 
-            while(resultados.next()){
+            while (resultados.next()) {
                 veiculosList.add(new Veiculo(
                         resultados.getInt("id"),
                         resultados.getString("modelo"),
                         resultados.getString("fabricante"),
                         resultados.getString("cor"),
                         resultados.getInt("ano"),
-                        resultados.getDouble("preco")
+                        resultados.getDouble("preco"),
+                        resultados.getBoolean("vendido")
                 ));
             }
             BancoDados.fecha(conn);
@@ -252,7 +225,108 @@ public class VeiculoController {
         BancoDados.fecha(conn);
         return null;
     }
-      
-      
-      
+
+    public static ArrayList<Veiculo> getPorModelo(String modelo) {
+        Connection conn = BancoDados.conecta();
+
+        try {
+            String sql = "SELECT * FROM veiculo WHERE modelo LIKE '%" + modelo + "%'";
+            Statement statement = conn.createStatement();
+
+            ResultSet resultados = statement.executeQuery(sql);
+
+            ArrayList<Veiculo> veiculosList = new ArrayList<Veiculo>();
+
+            while (resultados.next()) {
+                veiculosList.add(new Veiculo(
+                        resultados.getInt("id"),
+                        resultados.getString("modelo"),
+                        resultados.getString("fabricante"),
+                        resultados.getString("cor"),
+                        resultados.getInt("ano"),
+                        resultados.getDouble("preco"),
+                        resultados.getBoolean("vendido")
+                ));
+            }
+            BancoDados.fecha(conn);
+            return veiculosList;
+        } catch (SQLException e) {
+            System.err.println(e);
+        }
+
+        BancoDados.fecha(conn);
+        return null;
+    }
+
+    public static Veiculo getPorId(int id) {
+        Connection conn = BancoDados.conecta();
+
+        try {
+            String sql = "SELECT * FROM veiculo WHERE id = " + id;
+            Statement statement = conn.createStatement();
+
+            ResultSet resultados = statement.executeQuery(sql);
+
+            Veiculo v = null;
+
+            while (resultados.next()) {
+                v = new Veiculo(
+                        resultados.getInt("id"),
+                        resultados.getString("modelo"),
+                        resultados.getString("fabricante"),
+                        resultados.getString("cor"),
+                        resultados.getInt("ano"),
+                        resultados.getDouble("preco"),
+                        resultados.getBoolean("vendido")
+                );
+            }
+            BancoDados.fecha(conn);
+            return v;
+            
+        } catch (SQLException e) {
+            System.err.println(e);
+        }
+
+        BancoDados.fecha(conn);
+        return null;
+    }
+
+    public static void updateVeiculo(Veiculo v) {
+        Connection conn = BancoDados.conecta();
+
+        try {
+            String sql = "UPDATE veiculo"
+                    + "SET modelo = ?,"
+                    + "fabricante = ?,"
+                    + "ano = ?,"
+                    + "cor = ?,"
+                    + "preco = ?,"
+                    + "vendido = ?"
+                    + "WHERE id = ?";
+            
+            PreparedStatement statement = conn.prepareStatement(sql);
+
+            statement.setString(1, v.getModelo());
+            statement.setString(2, v.getFabricante());
+            statement.setInt(3, v.getAno());
+            statement.setString(4, v.getCor());
+            statement.setDouble(5, v.getPreco());
+            statement.setBoolean(6, v.isVendido());
+            statement.setInt(7, v.getId());
+
+            int linhas = statement.executeUpdate();
+
+            if (linhas > 0) {
+                System.out.println("\n\n===============================");
+                System.out.println("Veículo Vendido com Sucesso!");
+                System.out.println("===============================\n\n");
+            } else {
+                System.out.println("Erro ao cadastrar!");
+            }
+        } catch (SQLException e) {
+            System.err.println(e);
+        }
+        BancoDados.fecha(conn);
+    }
+
 }

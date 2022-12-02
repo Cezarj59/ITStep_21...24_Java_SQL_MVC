@@ -1,6 +1,7 @@
 package classroom_21.views;
 
 import classroom_21.controllers.VeiculoController;
+import classroom_21.controllers.VendasController;
 import classroom_21.models.Veiculo;
 import classroom_21.services.Receber;
 
@@ -16,6 +17,7 @@ public class Menus {
             System.out.println("(0) #SAIR#");
             System.out.println("(1)Cadastrar");
             System.out.println("(2)Consultar");
+            System.out.println("(3)Vender");
             System.out.print("Informe a opção desejada: ");
             int op = Receber.inteiro();
 
@@ -26,6 +28,9 @@ public class Menus {
                 case 2:
                     consultar();
                     break;
+                case 3:
+                    vendeVeiculo();
+                    break;
                 case 0:
                     System.err.println("SAINDO!");
                     System.exit(0);
@@ -34,6 +39,11 @@ public class Menus {
             }
         }
 
+    }
+
+    private static void vendeVeiculo() {
+        System.out.println("\n\n========VENDE VEÍCULOS========\n");
+        VendasController.addVendas(VendasController.cadastra());
     }
 
     private static void cadastar() {
@@ -150,4 +160,5 @@ public class Menus {
         }
 
     }
+
 }
