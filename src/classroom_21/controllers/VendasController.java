@@ -15,32 +15,45 @@ public class VendasController {
 
         String sql = "INSERT INTO vendas (idVeiculo) VALUES(?)";
 
-        try {
-            PreparedStatement statement = conn.prepareStatement(sql);
-            statement.setInt(1, venda.getIdVeiculo());
+        if (venda != null) {
+            try {
+                PreparedStatement statement = conn.prepareStatement(sql);
+                statement.setInt(1, venda.getIdVeiculo());
 
-            int qnt = statement.executeUpdate();
+                int qnt = statement.executeUpdate();
 
-            Veiculo veiculo = VeiculoController.getPorId(venda.getIdVeiculo());
-            veiculo.setVendido(true);
-            VeiculoController.updateVeiculo(veiculo);
+                Veiculo veiculo = VeiculoController.getPorId(venda.getIdVeiculo());
+                veiculo.setVendido(true);
+                VeiculoController.updateVeiculo(veiculo);
 
-            if (qnt > 0) {
-                System.out.println("\nVenda Realizada com Sucesso\n");
+                if (qnt > 0) {
+                    System.out.println("\nVenda Realizada com Sucesso\n");
+                }
+
+            } catch (Exception e) {
+                System.err.println(e);
             }
-
-        } catch (Exception e) {
-            System.out.println(e);
+        } else {
+            System.out.println("\nO Veiculo já foi vendido!!!");
         }
+
         BancoDados.fecha(conn);
     }
 
     public static Vendas cadastra() {
         Vendas v = new Vendas();
         System.out.print("Qual o id do Veiculo vendido: ");
-        v.setIdVeiculo(Receber.inteiro());
+        int id = Receber.inteiro();
 
-        return v;
+        if (consultarVeiculosVendidos(id)) {
+            System.out.println("\nVeiculo não Disponivel pra venda!!!");
+        } else {
+            v.setIdVeiculo(Receber.inteiro());
+            return v;
+
+        }
+
+        return null;
     }
 
     public static ArrayList<Vendas> getAll() {
@@ -67,4 +80,24 @@ public class VendasController {
         BancoDados.fecha(conn);
         return null;
     }
+
+    public static void imprime(Vendas v) {
+        System.out.println("ID da Venda: " + v.getId());
+        System.out.println("ID do Veiculo: " + v.getIdVeiculo());
+        System.out.println("Data da Venda: " + v.getDataHora());
+
+    }
+
+    private static boolean consultarVeiculosVendidos(int idVeiculoP) {
+        Boolean vendido = false;
+        ArrayList<Vendas> listaVendidos = VendasController.getAll();
+        for (Vendas v : listaVendidos) {
+            if (v.getIdVeiculo() == idVeiculoP) {
+                vendido = true;
+            }
+
+        }
+        return vendido;
+    }
+
 }
