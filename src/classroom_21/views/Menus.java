@@ -3,6 +3,7 @@ package classroom_21.views;
 import classroom_21.controllers.VeiculoController;
 import classroom_21.controllers.VendasController;
 import classroom_21.models.Veiculo;
+import classroom_21.models.Vendas;
 import classroom_21.services.Receber;
 
 import java.util.ArrayList;
@@ -12,13 +13,14 @@ public class Menus {
     public static void inicio() {
         while (0 == 0) {
             System.out.println("\n\n===================================");
-            System.out.println("-----CONCESSIONÁRIA LINO'S CAR-----");
+            System.out.println("-----CONCESSIONÁRIA CEZAR'S CAR-----");
             System.out.println("===================================");
             System.out.println("(0) #SAIR#");
             System.out.println("(1)Cadastrar");
             System.out.println("(2)Consultar");
             System.out.println("(3)Vender");
-            System.out.print("Informe a opção desejada: ");
+            System.out.println("(4)Consultar Vendas");
+            System.out.print("\nInforme a opção desejada: ");
             int op = Receber.inteiro();
 
             switch (op) {
@@ -30,6 +32,9 @@ public class Menus {
                     break;
                 case 3:
                     vendeVeiculo();
+                    break;
+                case 4:
+                    consultarVendas();
                     break;
                 case 0:
                     System.err.println("SAINDO!");
@@ -51,6 +56,15 @@ public class Menus {
         VeiculoController.addVeiculo(VeiculoController.cadastra());
     }
 
+    private static void consultarVendas() {
+        System.out.println("\n\n========CONSULTAR VENDAS========\n");
+        ArrayList<Vendas> listaVendas = VendasController.getAll();
+          for (Vendas v : listaVendas) {
+                    VendasController.imprime(v);
+                    System.out.println("_____________________");
+                }
+    }
+
     private static void consultar() {
         System.out.println("\n\n========CONSULTAR VEÍCULOS========\n");
         System.out.println("(1) TODOS");
@@ -59,7 +73,7 @@ public class Menus {
         System.out.println("(4) POR COR");
         System.out.println("(5) FAIXA DE PREÇO");
         System.out.println("(6) MODELO");
-        System.out.print("Informe a opção desejada: ");
+        System.out.print("\nInforme a opção desejada: ");
         int op = Receber.inteiro();
 
         switch (op) {

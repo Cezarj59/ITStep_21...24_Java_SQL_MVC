@@ -16,6 +16,8 @@ public class VeiculoController {
         System.out.println("Cor: " + v.getCor());
         System.out.println("Ano: " + v.getAno());
         System.out.println("Preço: R$ " + v.getPreco());
+        String status = v.isVendido() == true ? "Vendido" : "Disponivel";
+        System.out.println("Status: " + status);
     }
 
     public static Veiculo cadastra() {
@@ -295,14 +297,14 @@ public class VeiculoController {
         Connection conn = BancoDados.conecta();
 
         try {
-            String sql = "UPDATE veiculo"
-                    + "SET modelo = ?,"
-                    + "fabricante = ?,"
-                    + "ano = ?,"
-                    + "cor = ?,"
-                    + "preco = ?,"
-                    + "vendido = ?"
-                    + "WHERE id = ?";
+            String sql = "UPDATE veiculo "
+                    + "SET modelo = ?, "
+                    + "fabricante = ?, "
+                    + "ano = ?, "
+                    + "cor = ?, "
+                    + "preco = ?, "
+                    + "vendido = ? "
+                    + "WHERE id = ? ";
             
             PreparedStatement statement = conn.prepareStatement(sql);
 
@@ -321,7 +323,7 @@ public class VeiculoController {
                 System.out.println("Veículo Vendido com Sucesso!");
                 System.out.println("===============================\n\n");
             } else {
-                System.out.println("Erro ao cadastrar!");
+                 System.err.println("Erro Atualizar Status do Veiculo!");
             }
         } catch (SQLException e) {
             System.err.println(e);
@@ -330,3 +332,4 @@ public class VeiculoController {
     }
 
 }
+ 
