@@ -43,12 +43,13 @@ public class VendasController {
     public static Vendas cadastra() {
         Vendas v = new Vendas();
         System.out.print("Qual o id do Veiculo vendido: ");
+
         int id = Receber.inteiro();
 
         if (consultarVeiculosVendidos(id)) {
             System.out.println("\nVeiculo não Disponivel pra venda!!!");
         } else {
-            v.setIdVeiculo(Receber.inteiro());
+            v.setIdVeiculo(id);
             return v;
 
         }
@@ -68,7 +69,32 @@ public class VendasController {
                 lista.add(new Vendas(
                         resultados.getInt("id"),
                         resultados.getInt("idVeiculo"),
-                        resultados.getDate("dataHora")
+                        resultados.getTimestamp("dataHora")
+                ));
+            }
+            BancoDados.fecha(conn);
+            return lista;
+        } catch (Exception e) {
+            System.out.println(e);
+
+        }
+        BancoDados.fecha(conn);
+        return null;
+    }
+
+    public static ArrayList<Vendas> getVendasPorDia(String data) {
+        Connection conn = BancoDados.conecta();
+        ArrayList<Vendas> lista = new ArrayList<Vendas>();
+        try {
+            String sql = "SELECT * FROM vendas WHERE dataHora Like '%"+data+"%';";
+            Statement statement = conn.createStatement();
+            ResultSet resultados = statement.executeQuery(sql);
+
+            while (resultados.next()) {
+                lista.add(new Vendas(
+                        resultados.getInt("id"),
+                        resultados.getInt("idVeiculo"),
+                        resultados.getTimestamp("dataHora")
                 ));
             }
             BancoDados.fecha(conn);

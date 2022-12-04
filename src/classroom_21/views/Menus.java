@@ -58,11 +58,55 @@ public class Menus {
 
     private static void consultarVendas() {
         System.out.println("\n\n========CONSULTAR VENDAS========\n");
-        ArrayList<Vendas> listaVendas = VendasController.getAll();
-          for (Vendas v : listaVendas) {
+
+        System.out.println("(1) TODOS");
+        System.out.println("(2) Vendas por dia");
+        System.out.print("\nInforme a opção desejada: ");
+        int op = Receber.inteiro();
+
+        switch (op) {
+            case 1: //todos
+                ArrayList<Veiculo> listaAllVeiculos = VeiculoController.getAll();
+                System.out.println("\n_____TODOS OS VEÍCULOS_____\n");
+
+                ArrayList<Vendas> listaVendas = VendasController.getAll();
+                
+                for (int i = 0; i < listaVendas.size(); i++) {
+                    System.out.println("Venda\n");
+                     VendasController.imprime(listaVendas.get(i));
+                     System.out.println("\nVeiculo\n");
+                       VeiculoController.imprime(listaAllVeiculos.get(i));
+                       System.out.println("_____________________\n");
+                }
+//                for (Vendas v : listaVendas) {
+//                   
+//                    for(Veiculo c : listaAllVeiculos){
+//                  
+//                    }
+//                    
+//                    System.out.println("_____________________");
+//                }
+                if (listaVendas.isEmpty()) {
+                    System.out.println("\n--Não há Vendas Cadastradas--");
+
+                }
+                break;
+            case 2: //por dia
+                System.out.print("\nInforme a data da seguinte forma aaaa-mm-dd: ");
+                String dia = Receber.texto();
+                ArrayList<Vendas> listaVendasPorDia = VendasController.getVendasPorDia(dia);
+                for (Vendas v : listaVendasPorDia) {
                     VendasController.imprime(v);
                     System.out.println("_____________________");
+
                 }
+                if (listaVendasPorDia.isEmpty()) {
+                    System.out.println("\n--Não há Vendas Cadastradas neste Dia--");
+
+                }
+                break;
+        }
+
     }
 
     private static void consultar() {
@@ -87,7 +131,7 @@ public class Menus {
                 }
 
                 if (lista.isEmpty()) {
-                    System.out.println("--Não há Cadastros--");
+                    System.out.println("\n--Não há Cadastros--");
                 }
                 break;
             case 2: //por fabricante
@@ -102,7 +146,7 @@ public class Menus {
                 }
 
                 if (lista2.isEmpty()) {
-                    System.out.println("--Não há Cadastros com fabricante: " + fabricante + "--");
+                    System.out.println("\n--Não há Cadastros com fabricante: " + fabricante + "--");
                 }
                 break;
             case 3: //por preço máximo
@@ -118,7 +162,7 @@ public class Menus {
                 }
 
                 if (lista3.isEmpty()) {
-                    System.out.println("--Não há Cadastros até R$ " + valor + "--");
+                    System.out.println("\n--Não há Cadastros até R$ " + valor + "--");
                 }
                 break;
             case 4: //COR
@@ -134,7 +178,7 @@ public class Menus {
                 }
 
                 if (lista4.isEmpty()) {
-                    System.out.println("--Não há Cadastros até R$ " + cor + "--");
+                    System.out.println("\n--Não há Cadastros até R$ " + cor + "--");
                 }
                 break;
             case 5: //FAIXA DE PREÇO
@@ -152,7 +196,7 @@ public class Menus {
                 }
 
                 if (lista5.isEmpty()) {
-                    System.out.println("--Não há Cadastros até R$ " + menor + " A " + maior + "--");
+                    System.out.println("\n--Não há Cadastros até R$ " + menor + " A " + maior + "--");
                 }
                 break;
             case 6: //por preço MODELO
@@ -168,7 +212,7 @@ public class Menus {
                 }
 
                 if (lista6.isEmpty()) {
-                    System.out.println("--Não há Cadastros até R$ " + modelo + "--");
+                    System.out.println("\n--Não há Cadastros até R$ " + modelo + "--");
                 }
                 break;
         }
