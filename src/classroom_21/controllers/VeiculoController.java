@@ -16,7 +16,7 @@ public class VeiculoController {
         System.out.println("Cor: " + v.getCor());
         System.out.println("Ano: " + v.getAno());
         System.out.println("Preço: R$ " + v.getPreco());
-        String status = v.isVendido() == true ? "Vendido" : "Disponivel";
+        String status = v.isVendido() ? "Vendido" : "Disponivel";
         System.out.println("Status: " + status);
     }
 
