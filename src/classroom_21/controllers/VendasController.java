@@ -82,11 +82,36 @@ public class VendasController {
         return null;
     }
 
+    public static ArrayList<Vendas> getPorModelo(String modelo) {
+        Connection conn = BancoDados.conecta();
+        ArrayList<Vendas> lista = new ArrayList<Vendas>();
+        try {
+            String sql = "SELECT * FROM vendas Where '%" + modelo + "%'";
+            Statement statement = conn.createStatement();
+            ResultSet resultados = statement.executeQuery(sql);
+
+            while (resultados.next()) {
+                lista.add(new Vendas(
+                        resultados.getInt("id"),
+                        resultados.getInt("idVeiculo"),
+                        resultados.getTimestamp("dataHora")
+                ));
+            }
+            BancoDados.fecha(conn);
+            return lista;
+        } catch (Exception e) {
+            System.out.println(e);
+
+        }
+        BancoDados.fecha(conn);
+        return null;
+    }
+
     public static ArrayList<Vendas> getVendasPorDia(String data) {
         Connection conn = BancoDados.conecta();
         ArrayList<Vendas> lista = new ArrayList<Vendas>();
         try {
-            String sql = "SELECT * FROM vendas WHERE dataHora Like '%"+data+"%';";
+            String sql = "SELECT * FROM vendas WHERE dataHora Like '%" + data + "%';";
             Statement statement = conn.createStatement();
             ResultSet resultados = statement.executeQuery(sql);
 

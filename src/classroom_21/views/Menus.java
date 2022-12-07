@@ -67,25 +67,18 @@ public class Menus {
         switch (op) {
             case 1: //todos
                 ArrayList<Veiculo> listaAllVeiculos = VeiculoController.getAll();
+                ArrayList<Vendas> listaVendas = VendasController.getAll();
+
                 System.out.println("\n_____TODOS OS VEÍCULOS_____\n");
 
-                ArrayList<Vendas> listaVendas = VendasController.getAll();
-                
                 for (int i = 0; i < listaVendas.size(); i++) {
                     System.out.println("Venda\n");
-                     VendasController.imprime(listaVendas.get(i));
-                     System.out.println("\nVeiculo\n");
-                       VeiculoController.imprime(listaAllVeiculos.get(i));
-                       System.out.println("_____________________\n");
+                    VendasController.imprime(listaVendas.get(i));
+                    System.out.println("\nVeiculo\n");
+                    VeiculoController.imprime(listaAllVeiculos.get(i));
+                    System.out.println("_____________________\n");
                 }
-//                for (Vendas v : listaVendas) {
-//                   
-//                    for(Veiculo c : listaAllVeiculos){
-//                  
-//                    }
-//                    
-//                    System.out.println("_____________________");
-//                }
+
                 if (listaVendas.isEmpty()) {
                     System.out.println("\n--Não há Vendas Cadastradas--");
 
