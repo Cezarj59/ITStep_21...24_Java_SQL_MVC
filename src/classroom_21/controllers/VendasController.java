@@ -60,16 +60,37 @@ public class VendasController {
     public static ArrayList<Vendas> getAll() {
         Connection conn = BancoDados.conecta();
         ArrayList<Vendas> lista = new ArrayList<Vendas>();
+
         try {
-            String sql = "SELECT * FROM vendas";
+            String sql = "SELECT vendas.id AS idVenda,"
+                    + " vendas.idVeiculo AS idVeiculo,"
+                    + " vendas.dataHora AS dataHora,"
+                    + " veiculo.modelo AS modelo,"
+                    + " veiculo.fabricante AS fabricante,"
+                    + " veiculo.cor AS cor,"
+                    + " veiculo.ano AS ano,"
+                    + " veiculo.preco AS preco,"
+                    + " veiculo.vendido AS vendido"
+                    + " FROM vendas INNER JOIN veiculo"
+                    + " ON veiculo.id = vendas.idVeiculo";
+
             Statement statement = conn.createStatement();
             ResultSet resultados = statement.executeQuery(sql);
 
             while (resultados.next()) {
                 lista.add(new Vendas(
-                        resultados.getInt("id"),
+                        resultados.getInt("idVenda"),
                         resultados.getInt("idVeiculo"),
-                        resultados.getTimestamp("dataHora")
+                        resultados.getDate("dataHora"),
+                        new Veiculo(
+                                resultados.getInt("idVeiculo"),
+                                resultados.getString("modelo"),
+                                resultados.getString("fabricante"),
+                                resultados.getString("cor"),
+                                resultados.getInt("ano"),
+                                resultados.getDouble("preco"),
+                                resultados.getBoolean("vendido")
+                        )
                 ));
             }
             BancoDados.fecha(conn);
@@ -81,20 +102,87 @@ public class VendasController {
         BancoDados.fecha(conn);
         return null;
     }
+   public static ArrayList<Vendas> getVendasPorDia(String data) {
+        Connection conn = BancoDados.conecta();
+        ArrayList<Vendas> lista = new ArrayList<Vendas>();
+        try {
+            
+            String sql = "SELECT vendas.id AS idVenda,"
+                    + " vendas.idVeiculo AS idVeiculo,"
+                    + " vendas.dataHora AS dataHora,"
+                    + " veiculo.modelo AS modelo,"
+                    + " veiculo.fabricante AS fabricante,"
+                    + " veiculo.cor AS cor,"
+                    + " veiculo.ano AS ano,"
+                    + " veiculo.preco AS preco,"
+                    + " veiculo.vendido AS vendido"
+                    + " FROM vendas INNER JOIN veiculo"
+                    + " ON veiculo.id = vendas.idVeiculo"
+                    + " WHERE dataHora LIKE '%" + data + "%'";
 
+            Statement statement = conn.createStatement();
+            ResultSet resultados = statement.executeQuery(sql);
+
+            while (resultados.next()) {
+                lista.add(new Vendas(
+                        resultados.getInt("idVenda"),
+                        resultados.getInt("idVeiculo"),
+                        resultados.getDate("dataHora"),
+                        new Veiculo(
+                                resultados.getInt("idVeiculo"),
+                                resultados.getString("modelo"),
+                                resultados.getString("fabricante"),
+                                resultados.getString("cor"),
+                                resultados.getInt("ano"),
+                                resultados.getDouble("preco"),
+                                resultados.getBoolean("vendido")
+                        )
+                ));
+            }
+            BancoDados.fecha(conn);
+            return lista;
+        } catch (Exception e) {
+            System.out.println(e);
+
+        }
+        BancoDados.fecha(conn);
+        return null;
+    }
+   
     public static ArrayList<Vendas> getPorModelo(String modelo) {
         Connection conn = BancoDados.conecta();
         ArrayList<Vendas> lista = new ArrayList<Vendas>();
         try {
-            String sql = "SELECT * FROM vendas Where '%" + modelo + "%'";
+            String sql = "SELECT vendas.id AS idVenda,"
+                    + " vendas.idVeiculo AS idVeiculo,"
+                    + " vendas.dataHora AS dataHora,"
+                    + " veiculo.modelo AS modelo,"
+                    + " veiculo.fabricante AS fabricante,"
+                    + " veiculo.cor AS cor,"
+                    + " veiculo.ano AS ano,"
+                    + " veiculo.preco AS preco,"
+                    + " veiculo.vendido AS vendido"
+                    + " FROM vendas INNER JOIN veiculo"
+                    + " ON veiculo.id = vendas.idVeiculo"
+                    + " WHERE modelo LIKE '%" + modelo + "%'";
+
             Statement statement = conn.createStatement();
             ResultSet resultados = statement.executeQuery(sql);
 
             while (resultados.next()) {
                 lista.add(new Vendas(
-                        resultados.getInt("id"),
+                        resultados.getInt("idVenda"),
                         resultados.getInt("idVeiculo"),
-                        resultados.getTimestamp("dataHora")
+                        resultados.getDate("dataHora"),
+                        new Veiculo(
+                                resultados.getInt("idVeiculo"),
+                                resultados.getString("modelo"),
+                                resultados.getString("fabricante"),
+                                resultados.getString("cor"),
+                                resultados.getInt("ano"),
+                                resultados.getDouble("preco"),
+                                resultados.getBoolean("vendido")
+                        )
                 ));
             }
             BancoDados.fecha(conn);
@@ -107,35 +195,206 @@ public class VendasController {
         return null;
     }
 
-    public static ArrayList<Vendas> getVendasPorDia(String data) {
+  public static ArrayList<Vendas> getPorFabricante(String fabricante) {
         Connection conn = BancoDados.conecta();
-        ArrayList<Vendas> lista = new ArrayList<Vendas>();
+
         try {
-            String sql = "SELECT * FROM vendas WHERE dataHora Like '%" + data + "%';";
+            String sql = "SELECT vendas.id AS idVenda,"
+                    + " vendas.idVeiculo AS idVeiculo,"
+                    + " vendas.dataHora AS dataHora,"
+                    + " veiculo.modelo AS modelo,"
+                    + " veiculo.fabricante AS fabricante,"
+                    + " veiculo.cor AS cor,"
+                    + " veiculo.ano AS ano,"
+                    + " veiculo.preco AS preco,"
+                    + " veiculo.vendido AS vendido"
+                    + " FROM vendas INNER JOIN veiculo"
+                    + " ON veiculo.id = vendas.idVeiculo"
+                    + " WHERE fabricante LIKE '%" + fabricante + "%'";
+            
             Statement statement = conn.createStatement();
+
             ResultSet resultados = statement.executeQuery(sql);
 
-            while (resultados.next()) {
+            ArrayList<Vendas> lista = new ArrayList<Vendas>();
+
+             while (resultados.next()) {
                 lista.add(new Vendas(
-                        resultados.getInt("id"),
+                        resultados.getInt("idVenda"),
                         resultados.getInt("idVeiculo"),
-                        resultados.getTimestamp("dataHora")
+                        resultados.getDate("dataHora"),
+                        new Veiculo(
+                                resultados.getInt("idVeiculo"),
+                                resultados.getString("modelo"),
+                                resultados.getString("fabricante"),
+                                resultados.getString("cor"),
+                                resultados.getInt("ano"),
+                                resultados.getDouble("preco"),
+                                resultados.getBoolean("vendido")
+                        )
                 ));
             }
             BancoDados.fecha(conn);
             return lista;
-        } catch (Exception e) {
-            System.out.println(e);
-
+        } catch (SQLException e) {
+            System.err.println(e);
         }
+
+        BancoDados.fecha(conn);
+        return null;
+    }
+  
+    public static ArrayList<Vendas> getPorPrecoMaximo(double preco) {
+        Connection conn = BancoDados.conecta();
+
+        try {
+             String sql = "SELECT vendas.id AS idVenda,"
+                    + " vendas.idVeiculo AS idVeiculo,"
+                    + " vendas.dataHora AS dataHora,"
+                    + " veiculo.modelo AS modelo,"
+                    + " veiculo.fabricante AS fabricante,"
+                    + " veiculo.cor AS cor,"
+                    + " veiculo.ano AS ano,"
+                    + " veiculo.preco AS preco,"
+                    + " veiculo.vendido AS vendido"
+                    + " FROM vendas INNER JOIN veiculo"
+                    + " ON veiculo.id = vendas.idVeiculo"
+                    + " WHERE preco <= " + preco;
+            Statement statement = conn.createStatement();
+
+            ResultSet resultados = statement.executeQuery(sql);
+
+
+            ArrayList<Vendas> lista = new ArrayList<Vendas>();
+
+             while (resultados.next()) {
+                lista.add(new Vendas(
+                        resultados.getInt("idVenda"),
+                        resultados.getInt("idVeiculo"),
+                        resultados.getDate("dataHora"),
+                        new Veiculo(
+                                resultados.getInt("idVeiculo"),
+                                resultados.getString("modelo"),
+                                resultados.getString("fabricante"),
+                                resultados.getString("cor"),
+                                resultados.getInt("ano"),
+                                resultados.getDouble("preco"),
+                                resultados.getBoolean("vendido")
+                        )
+                ));
+            }
+            BancoDados.fecha(conn);
+            return lista;
+        } catch (SQLException e) {
+            System.err.println(e);
+        }
+        BancoDados.fecha(conn);
+        return null;
+    }
+
+    public static ArrayList<Vendas> getPorCor(String cor) {
+        Connection conn = BancoDados.conecta();
+
+        try {
+            String sql = "SELECT vendas.id AS idVenda,"
+                    + " vendas.idVeiculo AS idVeiculo,"
+                    + " vendas.dataHora AS dataHora,"
+                    + " veiculo.modelo AS modelo,"
+                    + " veiculo.fabricante AS fabricante,"
+                    + " veiculo.cor AS cor,"
+                    + " veiculo.ano AS ano,"
+                    + " veiculo.preco AS preco,"
+                    + " veiculo.vendido AS vendido"
+                    + " FROM vendas INNER JOIN veiculo"
+                    + " ON veiculo.id = vendas.idVeiculo"
+                    + " WHERE cor LIKE '%" + cor + "%'";
+            Statement statement = conn.createStatement();
+
+            ResultSet resultados = statement.executeQuery(sql);
+
+
+           ArrayList<Vendas> lista = new ArrayList<Vendas>();
+
+             while (resultados.next()) {
+                lista.add(new Vendas(
+                        resultados.getInt("idVenda"),
+                        resultados.getInt("idVeiculo"),
+                        resultados.getDate("dataHora"),
+                        new Veiculo(
+                                resultados.getInt("idVeiculo"),
+                                resultados.getString("modelo"),
+                                resultados.getString("fabricante"),
+                                resultados.getString("cor"),
+                                resultados.getInt("ano"),
+                                resultados.getDouble("preco"),
+                                resultados.getBoolean("vendido")
+                        )
+                ));
+            }
+            BancoDados.fecha(conn);
+            return lista;
+        } catch (SQLException e) {
+            System.err.println(e);
+        }
+
+        BancoDados.fecha(conn);
+        return null;
+    }
+
+    public static ArrayList<Vendas> getPorFaixaDePreco(double menor, double maior) {
+        Connection conn = BancoDados.conecta();
+
+        try {
+             String sql = "SELECT vendas.id AS idVenda,"
+                    + " vendas.idVeiculo AS idVeiculo,"
+                    + " vendas.dataHora AS dataHora,"
+                    + " veiculo.modelo AS modelo,"
+                    + " veiculo.fabricante AS fabricante,"
+                    + " veiculo.cor AS cor,"
+                    + " veiculo.ano AS ano,"
+                    + " veiculo.preco AS preco,"
+                    + " veiculo.vendido AS vendido"
+                    + " FROM vendas INNER JOIN veiculo"
+                    + " ON veiculo.id = vendas.idVeiculo"
+                    + " WHERE preco >= " + menor + "AND preco <= " + maior;
+            Statement statement = conn.createStatement();
+
+            ResultSet resultados = statement.executeQuery(sql);
+
+
+           ArrayList<Vendas> lista = new ArrayList<Vendas>();
+
+             while (resultados.next()) {
+                lista.add(new Vendas(
+                        resultados.getInt("idVenda"),
+                        resultados.getInt("idVeiculo"),
+                        resultados.getDate("dataHora"),
+                        new Veiculo(
+                                resultados.getInt("idVeiculo"),
+                                resultados.getString("modelo"),
+                                resultados.getString("fabricante"),
+                                resultados.getString("cor"),
+                                resultados.getInt("ano"),
+                                resultados.getDouble("preco"),
+                                resultados.getBoolean("vendido")
+                        )
+                ));
+            }
+            BancoDados.fecha(conn);
+            return lista;
+        } catch (SQLException e) {
+            System.err.println(e);
+        }
+
         BancoDados.fecha(conn);
         return null;
     }
 
     public static void imprime(Vendas v) {
         System.out.println("ID da Venda: " + v.getId());
-        System.out.println("ID do Veiculo: " + v.getIdVeiculo());
         System.out.println("Data da Venda: " + v.getDataHora());
+        VeiculoController.imprime(v.getVeiculo());
+        System.out.println("--------------------------");
 
     }
 
@@ -146,7 +405,6 @@ public class VendasController {
             if (v.getIdVeiculo() == idVeiculoP) {
                 vendido = true;
             }
-
         }
         return vendido;
     }
