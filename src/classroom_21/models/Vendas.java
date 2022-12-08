@@ -7,6 +7,8 @@ public class Vendas {
     private int id;
     private int idVeiculo;
     private Date dataHora;
+    
+    private Veiculo veiculo;
 
     public Vendas() {
     }
@@ -15,6 +17,13 @@ public class Vendas {
         this.id = id;
         this.idVeiculo = idVeiculo;
         this.dataHora = dataHora;
+    }
+
+    public Vendas(int id, int idVeiculo, Date dataHora, Veiculo veiculo) {
+        this.id = id;
+        this.idVeiculo = idVeiculo;
+        this.dataHora = dataHora;
+        this.veiculo = veiculo;
     }
 
     public int getId() {
@@ -41,4 +50,11 @@ public class Vendas {
         this.dataHora = dataHora;
     }
 
+    public Veiculo getVeiculo() {
+        return veiculo;
+    }
+
+    public void setVeiculo(Veiculo veiculo) {
+        this.veiculo = veiculo;
+    }
 }
