@@ -51,8 +51,13 @@
   </li>
   <li>A opção de consultar vendas deve conter as pesquisas por:
     <ul>
-    <li><b>Vendas por dia</b></li>
-    <li><b>Vendas por veículo</b></li>
+    <li><b>Todos</b></li>
+    <li><b>Vendas por dia</b></li> 
+    <li><b>Modelo</b></li> 
+    <li><b>Fabricante</b></li>
+    <li><b>Cor</b></li>
+    <li><b>Preço Máximo</b></li>
+    <li><b>Faixa de preço</b></li>
     </ul>  
   </li>
 </ol>
