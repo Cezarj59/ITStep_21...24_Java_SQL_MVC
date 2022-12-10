@@ -9,6 +9,7 @@
 <li>MySQL</li>
 <li>UPDATE</li>
 <li>SELECT * FROM</li>
+<li>INNER JOIN</li>
 <li>WHERE</li>
 <li>LIKE</li>
 <li>MariaDB</li>
@@ -56,15 +57,18 @@
   </li>
 </ol>
 
-<h4>Output Menu Cadastro:</h4> 
 
+<h4>Output ex. consulta de veículo por COR:</h4> 
 
+![Screenshot from 2022-12-09 21-15-00](https://user-images.githubusercontent.com/78119622/206816590-96f3f1b2-70f6-4364-985c-4f4372711b15.png)
 
-<h4>Output Consulta:</h4>
+<h4>Output ex. consulta de vendas de veículo por Faixa de Preço:</h4> 
 
+![Screenshot from 2022-12-09 21-15-47](https://user-images.githubusercontent.com/78119622/206817003-41db6abf-c5cd-483c-89b9-300ffaa58e81.png)
 
+<h4>Output ex. consulta de todos os veículos cadastrados:</h4> 
 
-<h4>Output Banco de Dados:</h4>
+![Screenshot from 2022-12-09 21-16-19](https://user-images.githubusercontent.com/78119622/206817398-0b598b24-ac48-4d03-839a-510e6f5cf7c0.png)
 
 
 <h4>Tecnologias Utilizadas.</h4>
